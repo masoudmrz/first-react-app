@@ -1,9 +1,27 @@
-import Like from "./components/Like";
-
+import { useState } from "react";
+import produce from "immer";
 function App() {
+  const [bugs, setBugs] = useState([
+    { id: 1, title: "bug1", fixed: false },
+    { id: 2, title: "bug2", fixed: false },
+  ]);
+  const handlePrice = () => {
+    //setBugs(bugs.map((bug) => (bug.id === 1 ? { ...bug, fixed: true } : bug)));
+    setBugs(
+      produce((draft) => {
+        const bug = draft.find((bug) => bug.id === 1);
+        if (bug) bug.fixed = true;
+      })
+    );
+  };
   return (
     <div>
-      <Like onClick={() => console.log("click")} />
+      {bugs.map((bug) => (
+        <p key={bug.id}>
+          {bug.title} {bug.fixed ? "fixed" : "new"}
+        </p>
+      ))}
+      <button onClick={handlePrice}>My Button</button>
     </div>
   );
 }
