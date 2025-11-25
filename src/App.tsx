@@ -1,27 +1,28 @@
 import { useState } from "react";
-import produce from "immer";
+import NavBar from "./components/NavBar";
+import Cart from "./components/Cart";
+
 function App() {
-  const [bugs, setBugs] = useState([
-    { id: 1, title: "bug1", fixed: false },
-    { id: 2, title: "bug2", fixed: false },
-  ]);
-  const handlePrice = () => {
-    //setBugs(bugs.map((bug) => (bug.id === 1 ? { ...bug, fixed: true } : bug)));
-    setBugs(
-      produce((draft) => {
-        const bug = draft.find((bug) => bug.id === 1);
-        if (bug) bug.fixed = true;
-      })
-    );
+  const [cart, setcart] = useState({
+    dis: 0.1,
+    items: [
+      { id: 1, title: "product1", quantity: 1 },
+      { id: 2, title: "product1", quantity: 1 },
+    ],
+  });
+  const handleClick = () => {
+    setcart({
+      ...cart,
+      items: cart.items.map((item) =>
+        item.title === "product1"
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      ),
+    });
   };
   return (
     <div>
-      {bugs.map((bug) => (
-        <p key={bug.id}>
-          {bug.title} {bug.fixed ? "fixed" : "new"}
-        </p>
-      ))}
-      <button onClick={handlePrice}>My Button</button>
+      <button onClick={handleClick}>click</button>
     </div>
   );
 }
